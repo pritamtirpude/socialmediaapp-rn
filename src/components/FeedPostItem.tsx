@@ -1,5 +1,5 @@
 import { Post } from "@/types/models";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import LucideIcons from "@react-native-vector-icons/lucide";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Image, Text, View } from "react-native";
@@ -30,22 +30,18 @@ export default function FeedPostItem({ post }: FeedPostItemProps) {
 
         <View className="flex-row gap-4">
           <View className="flex-row items-center gap-1">
-            <MaterialCommunityIcons
-              name="message-outline"
-              size={20}
-              color="gray"
-            />
+            <LucideIcons name="message-circle" size={20} color="gray" />
             <Text className="text-gray-500">{post.replies_count}</Text>
           </View>
 
           <View className="flex-row items-center gap-1">
-            <MaterialCommunityIcons name="repeat" size={20} color="gray" />
+            <LucideIcons name="repeat-2" size={20} color="gray" />
             <Text className="text-gray-500">{post.retweets_count}</Text>
           </View>
 
           <View className="flex-row items-center gap-1">
-            <MaterialCommunityIcons
-              name={post.is_liked ? "heart" : "heart-outline"}
+            <LucideIcons
+              name={post.is_liked ? "heart" : "heart"}
               size={20}
               color={post.is_liked ? "crimson" : "gray"}
             />

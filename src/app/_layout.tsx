@@ -1,4 +1,5 @@
-import { Stack } from "expo-router";
+import { AuthProvider } from "@/providers/AuthProvider";
+import { Slot } from "expo-router";
 import { DefaultTheme, ThemeProvider } from "expo-router/react-navigation";
 import "../../global.css";
 
@@ -12,11 +13,10 @@ export default function RootLayout() {
     },
   };
   return (
-    <ThemeProvider value={CustomTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ title: "Feed" }} />
-        <Stack.Screen name="post/[id]" options={{ title: "Post" }} />
-      </Stack>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider value={CustomTheme}>
+        <Slot />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
