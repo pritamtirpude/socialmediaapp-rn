@@ -1,15 +1,24 @@
 import FeedPostItem from "@/components/FeedPostItem";
-import dummyPosts from "@/dummyPosts";
-import { useAuth } from "@/providers/AuthProvider";
 import LucideIcons from "@react-native-vector-icons/lucide";
 import { Link } from "expo-router";
+import { useEffect, useState } from "react";
 import { FlatList, Pressable } from "react-native";
 export default function App() {
-  const { signOut } = useAuth();
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const posts = await fetch("/api/posts");
+      const data = await posts.json();
+      setPosts(data.posts);
+    };
+    fetchPosts();
+  }, []);
+
   return (
     <>
       <FlatList
-        data={dummyPosts}
+        data={posts}
         renderItem={({ item }) => (
           <Link href={`/post/${item.id}`}>
             <FeedPostItem post={item} />
