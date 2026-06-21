@@ -1,15 +1,27 @@
 import FeedPostItem from "@/components/FeedPostItem";
-import dummyPosts from "@/dummyPosts";
+import { useAuth } from "@/providers/AuthProvider";
+import { getPostById } from "@/services/postService";
+import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import { Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
 
 export default function PostDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { session } = useAuth();
 
-  const post = dummyPosts.find((p) => p.id === parseInt(id));
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["posts", id],
+    queryFn: async () => getPostById(session!.accessToken, id),
+    staleTime: 10 * 1000, // 10 seconds
+  });
 
-  if (!post) {
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
     return <Text>Post not found</Text>;
   }
-  return <FeedPostItem post={post} />;
+
+  return <FeedPostItem post={data} />;
 }

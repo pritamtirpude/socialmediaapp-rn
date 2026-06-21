@@ -1,4 +1,6 @@
+import { signInRequest } from "@/services/authService";
 import { User } from "@/types/models";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
 import {
   createContext,
@@ -32,25 +34,37 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const queryClient = useQueryClient();
+
+  const { mutate: signIn } = useMutation({
+    mutationFn: (handle: string) => signInRequest(handle),
+    onSuccess: (data) => {
+      setSession(data);
+      saveSession(data);
+    },
+  });
+
   useEffect(() => {
     loadSession();
   }, []);
 
-  const signIn = (handle: string) => {
-    const session: Session = {
-      user: {
-        id: "1",
-        name: "Vadim",
-        handle,
-        avatar,
-      },
-      accessToken: "accessToken",
-    };
-    setSession(session);
-    saveSession(session);
-  };
+  // const signIn = (handle: string) => {
+  //   const session: Session = {
+  //     user: {
+  //       id: "383bd451-9df3-4508-b216-ac87cdfed90e",
+  //       name: "Vadim Savin",
+  //       handle,
+  //       avatar,
+  //     },
+  //     accessToken:
+  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM4M2JkNDUxLTlkZjMtNDUwOC1iMjE2LWFjODdjZGZlZDkwZSIsImlhdCI6MTc4MjAzNTU3OCwiZXhwIjoxNzg0NjI3NTc4fQ.lnaCY64HKuZjI_lhrMVh1QMDGnmy9yubwxdc9o4feUg",
+  //   };
+  //   setSession(session);
+  //   saveSession(session);
+  // };
 
   const signOut = () => {
+    queryClient.clear();
     setSession(null);
     saveSession(null);
   };

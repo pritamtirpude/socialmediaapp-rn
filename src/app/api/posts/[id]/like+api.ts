@@ -3,7 +3,7 @@
 import { getDecodedToken } from "@/utils/serverAuth";
 import { neon } from "@neondatabase/serverless";
 
-const sql = neon(process.env.NEON_DATABASE_URL!);
+const sql = neon(process.env.DATABASE_URL!);
 
 // Test this endpoint with curl:
 // curl -X POST http://localhost:8081/api/posts/1/like -H "Authorization: Bearer <token>"
