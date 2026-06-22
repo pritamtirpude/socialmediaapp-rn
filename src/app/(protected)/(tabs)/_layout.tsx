@@ -1,4 +1,4 @@
-import LucideIcons from "@react-native-vector-icons/lucide";
+import MaterialIcons from "@react-native-vector-icons/material-design-icons";
 import { Tabs } from "expo-router";
 
 export default function TabsLayout() {
@@ -14,7 +14,7 @@ export default function TabsLayout() {
           title: "Feed",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <LucideIcons name="home" color={color} size={size} />
+            <MaterialIcons name="home" color={color} size={size} />
           ),
         }}
       />
@@ -23,7 +23,7 @@ export default function TabsLayout() {
         options={{
           title: "Search",
           tabBarIcon: ({ color, size }) => (
-            <LucideIcons name="search" color={color} size={size} />
+            <MaterialIcons name="magnify" color={color} size={size} />
           ),
         }}
       />
@@ -32,7 +32,7 @@ export default function TabsLayout() {
         options={{
           title: "Notifications",
           tabBarIcon: ({ color, size }) => (
-            <LucideIcons name="bell" color={color} size={size} />
+            <MaterialIcons name="bell" color={color} size={size} />
           ),
         }}
       />
@@ -41,7 +41,7 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <LucideIcons name="user" color={color} size={size} />
+            <MaterialIcons name="account" color={color} size={size} />
           ),
         }}
       />

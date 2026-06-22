@@ -1,7 +1,7 @@
 import FeedPostItem from "@/components/FeedPostItem";
 import { useAuth } from "@/providers/AuthProvider";
 import { getPosts } from "@/services/postService";
-import LucideIcons from "@react-native-vector-icons/lucide";
+import MaterialIcons from "@react-native-vector-icons/material-design-icons";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "expo-router";
 import { ActivityIndicator, FlatList, Pressable, Text } from "react-native";
@@ -37,7 +37,7 @@ export default function App() {
       />
       <Link href="/new" asChild>
         <Pressable className="absolute right-5 bottom-5 bg-[#007AFF] rounded-full w-[60px] h-[60px] items-center justify-center shadow-lg">
-          <LucideIcons name="plus" size={24} color="white" />
+          <MaterialIcons name="plus" size={24} color="white" />
         </Pressable>
       </Link>
     </>

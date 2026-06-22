@@ -1,7 +1,7 @@
 import { useAuth } from "@/providers/AuthProvider";
 import { likePostRequest, unlikePostRequest } from "@/services/postService";
 import { Post } from "@/types/models";
-import LucideIcons from "@react-native-vector-icons/lucide";
+import MaterialIcons from "@react-native-vector-icons/material-design-icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -20,15 +20,15 @@ export default function FeedPostItem({ post }: FeedPostItemProps) {
 
   const likeMutation = useMutation({
     mutationFn: () => likePostRequest(post.id, session?.accessToken!),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    onSettled: () => {
+      return queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 
   const unlikeMutation = useMutation({
     mutationFn: () => unlikePostRequest(post.id, session?.accessToken!),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    onSettled: () => {
+      return queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 
@@ -51,26 +51,40 @@ export default function FeedPostItem({ post }: FeedPostItemProps) {
 
         <View className="flex-row gap-4">
           <View className="flex-row items-center gap-1">
-            <LucideIcons name="message-circle" size={20} color="gray" />
+            <MaterialIcons name="message" size={20} color="gray" />
             <Text className="text-gray-500">{post.replies_count}</Text>
           </View>
 
           <View className="flex-row items-center gap-1">
-            <LucideIcons name="repeat-2" size={20} color="gray" />
+            <MaterialIcons name="repeat" size={20} color="gray" />
             <Text className="text-gray-500">{post.retweets_count}</Text>
           </View>
 
-          <View className="flex-row items-center gap-1">
-            <LucideIcons
-              onPress={() =>
-                post.is_liked ? unlikeMutation.mutate() : likeMutation.mutate()
-              }
-              name={post.is_liked ? "heart" : "heart"}
-              size={20}
-              color={post.is_liked ? "crimson" : "gray"}
-            />
-            <Text className="text-gray-500">{post.likes_count}</Text>
-          </View>
+          {likeMutation.isPending ? (
+            <View className="flex-row items-center gap-1">
+              <MaterialIcons name={"heart"} size={20} color={"crimson"} />
+              <Text className="text-gray-500">{post.likes_count + 1}</Text>
+            </View>
+          ) : unlikeMutation.isPending ? (
+            <View className="flex-row items-center gap-1">
+              <MaterialIcons name={"heart-outline"} size={20} color={"gray"} />
+              <Text className="text-gray-500">{post.likes_count - 1}</Text>
+            </View>
+          ) : (
+            <View className="flex-row items-center gap-1">
+              <MaterialIcons
+                onPress={() =>
+                  post.is_liked
+                    ? unlikeMutation.mutate()
+                    : likeMutation.mutate()
+                }
+                name={post.is_liked ? "heart" : "heart-outline"}
+                size={20}
+                color={post.is_liked ? "crimson" : "gray"}
+              />
+              <Text className="text-gray-500">{post.likes_count}</Text>
+            </View>
+          )}
         </View>
       </View>
     </View>
