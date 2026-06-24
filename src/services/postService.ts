@@ -1,5 +1,22 @@
-export async function getPosts(token: string) {
-  const response = await fetch("/api/posts", {
+type GetPostsParams = {
+  cursor?: string;
+  limit?: number;
+};
+
+export async function getPosts(params: GetPostsParams, token: string) {
+  const searchParams = new URLSearchParams();
+
+  if (params.cursor) {
+    searchParams.append("cursor", params.cursor);
+  }
+
+  if (params.limit) {
+    searchParams.append("limit", params.limit.toString());
+  }
+
+  const url = `/api/posts?${searchParams.toString()}`;
+
+  const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
