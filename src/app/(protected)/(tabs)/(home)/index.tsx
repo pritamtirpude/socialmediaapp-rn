@@ -7,6 +7,7 @@ import { Link } from "expo-router";
 import { ActivityIndicator, FlatList, Pressable, Text } from "react-native";
 export default function App() {
   const { session } = useAuth();
+  // const isFocused = useIsFocused();
 
   const {
     data,
@@ -27,7 +28,10 @@ export default function App() {
       }
       return { limit: 5, cursor: lastPage[lastPage.length - 1].id };
     },
+    // subscribed: isFocused,
   });
+
+  // useRefreshOnFocus();
 
   if (isLoading) {
     return <ActivityIndicator />;
