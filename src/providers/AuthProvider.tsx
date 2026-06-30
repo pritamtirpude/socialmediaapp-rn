@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Platform } from "react-native";
 
 type Session = {
   user: User;
@@ -70,20 +71,37 @@ export function AuthProvider({ children }: PropsWithChildren) {
   };
 
   const saveSession = async (session: Session | null) => {
-    if (session) {
-      await SecureStore.setItemAsync("session", JSON.stringify(session));
+    if (Platform.OS === "web") {
+      if (session) {
+        localStorage.setItem("session", JSON.stringify(session));
+      } else {
+        localStorage.removeItem("session");
+      }
     } else {
-      await SecureStore.deleteItemAsync("session");
+      if (session) {
+        await SecureStore.setItemAsync("session", JSON.stringify(session));
+      } else {
+        await SecureStore.deleteItemAsync("session");
+      }
     }
   };
 
   const loadSession = async () => {
-    const sessionData = await SecureStore.getItemAsync("session");
-
-    if (sessionData) {
-      setSession(JSON.parse(sessionData));
+    if (Platform.OS === "web") {
+      const sessionData = localStorage.getItem("session");
+      if (sessionData) {
+        setSession(JSON.parse(sessionData));
+      } else {
+        setSession(null);
+      }
     } else {
-      setSession(null);
+      const sessionData = await SecureStore.getItemAsync("session");
+
+      if (sessionData) {
+        setSession(JSON.parse(sessionData));
+      } else {
+        setSession(null);
+      }
     }
 
     setIsLoading(false);

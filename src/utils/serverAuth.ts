@@ -7,5 +7,7 @@ export function getDecodedToken(req: Request) {
     return null;
   }
 
-  return jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
+  return jwt.verify(token, process.env.JWT_SECRET!) as {
+    id: string;
+  };
 }

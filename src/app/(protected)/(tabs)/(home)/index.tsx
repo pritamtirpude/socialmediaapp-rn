@@ -47,6 +47,7 @@ export default function App() {
     <>
       <FlatList
         data={posts}
+        contentContainerClassName="w-full max-w-lg mx-auto"
         renderItem={({ item }) => (
           <Link href={`/post/${item.id}`} asChild>
             <Pressable>

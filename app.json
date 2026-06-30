@@ -24,10 +24,14 @@
       "bundler": "metro",
       "output": "server"
     },
-    "plugins": [
-      "expo-router",
-      "expo-status-bar",
-      "expo-secure-store"
-    ]
+    "plugins": ["expo-router", "expo-status-bar", "expo-secure-store"],
+    "extra": {
+      "router": {
+        "origin": "http://localhost:8081"
+      },
+      "eas": {
+        "projectId": "86b861c5-9627-449d-a90c-246b62e0de21"
+      }
+    }
   }
 }
